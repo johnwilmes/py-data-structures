@@ -147,12 +147,19 @@ class Trie(collections.abc.MutableSet):
 
         Args:
             seq: an iterable of names to be inserted"""
+        parent_stack = list()
         node = self._root
         for name in seq:
+            parent_stack.append(node)
             if name not in node.children:
                 node.children[name] = self.Node()
             node = node.children[name]
+        if node.terminal:
+            return
         node.terminal = True
+        node.size += 1
+        while parent_stack:
+            parent_stack.pop().size += 1
 
     def discard(self, seq):
         """Remove `seq` from the Trie.
