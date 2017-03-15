@@ -11,6 +11,10 @@ class Trie(collections.abc.MutableSet):
     from an alphabet, and the trie is used to store words (see the subclass
     StringTrie). The Trie is implemented internally as a tree, each node of
     which is a Trie.Node object.
+
+    Args:
+        contents (optional): a collection of sequences of names to initially
+            populate the Trie
     """
     class Node(object):
         """A node of a Trie object.
@@ -122,8 +126,12 @@ class Trie(collections.abc.MutableSet):
                     return False
             return seq in self._prefix_root
 
-    def __init__(self):
+    def __init__(self, contents=None):
         self._root = self.Node() # root node corresponding to empty prefix
+
+        if contents is not None:
+            for seq in contents:
+                self.add(seq)
 
     def __len__(self):
         return self._root.size
